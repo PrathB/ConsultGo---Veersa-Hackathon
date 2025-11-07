@@ -1,0 +1,17 @@
+# ignore .env
+.env
+# ignore node_modules
+node_modules/
+
+# ignore log files
+*.log
+# ignore build output
+dist/
+build/
+# ignore OS generated files
+.DS_Store
+server/README.md
+server/settings.txt
+server/PATH.txt
+
+server/Endpoints Docs.md
