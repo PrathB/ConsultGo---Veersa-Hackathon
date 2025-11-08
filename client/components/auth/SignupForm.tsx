@@ -556,7 +556,7 @@ function SignUpForm() {
     setFormData((prevForm) => ({ ...prevForm }));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setLoading(true);
 
