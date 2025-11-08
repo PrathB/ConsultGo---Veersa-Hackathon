@@ -16,7 +16,7 @@ README.md
 
 # production
 /build
-
+public/assets/kit.png
 # misc
 .DS_Store
 *.pem

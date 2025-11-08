@@ -13,9 +13,9 @@ export default function Home() {
       <ReadyTherapist />
       <Connection />
       <HowItWorks />
-      <Reviews />
+      {/* <Reviews />
       <Trusted />
-      <Benefits />
+      <Benefits /> */}
     </main>
   );
 }

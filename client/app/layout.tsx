@@ -9,9 +9,9 @@ import { DoctorProvider } from "@/context/GetDoctorsContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "TelemedPilot",
+  title: "ConsultGo",
   description:
-    "Pilot Development Project for Telemedicine Enterprise Solution in Healthcare",
+    "Telemedicine Enterprise Solution ",
   viewport: "width=device-width, initial-scale=1",
   keywords:
     "telemedicine, pilot, development, project, enterprise, solution, healthcare, health, medical, doctor, patient, appointment, video, call, chat, prescription, history, profile, user, admin, dashboard, calendar, schedule, reminder, notification, telemedapp",
