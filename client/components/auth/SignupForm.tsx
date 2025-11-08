@@ -556,7 +556,7 @@ function SignUpForm() {
     setFormData((prevForm) => ({ ...prevForm }));
   };
 
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
@@ -659,277 +659,450 @@ function SignUpForm() {
     userType === "Doctor" ? "text-blue-500" : "text-neutral-700"
   }`;
 
-   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-8 px-4">
-      <div className="max-w-2xl mx-auto">
-        {/* Header Card */}
-        <div className="bg-white rounded-3xl shadow-xl p-8 mb-6">
-          <div className="text-center mb-8">
-            <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
-              Create Your Account
-            </h2>
-            <p className="text-gray-600">Join ConsultGo and connect with experts</p>
-          </div>
-
-          {/* User Type Selection */}
-          <div className="flex gap-8 items-center justify-center mb-8">
-            <div 
-              className="flex flex-col gap-3 items-center cursor-pointer group"
-              onClick={() => setUserType("Patient")}
-            >
-              <div className={`relative ${patientImageClass} bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center`}>
-                <svg className="w-12 h-12 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-                {userType === "Patient" && (
-                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                )}
-              </div>
-              <p className={patientTextClass}>Patient</p>
-            </div>
-
-            <div 
-              className="flex flex-col gap-3 items-center cursor-pointer group"
-              onClick={() => setUserType("Doctor")}
-            >
-              <div className={`relative ${doctorImageClass} bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center`}>
-                <svg className="w-12 h-12 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                {userType === "Doctor" && (
-                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                )}
-              </div>
-              <p className={doctorTextClass}>Doctor</p>
-            </div>
-          </div>
+  return (
+    <div className="p-5 rounded-xl max-w-md m-auto h-screen overflow-y-hidden hover:overflow-y-scroll">
+      <h2 className="font-bold text-2xl text-center text-neutral-700 mb-6">
+        Sign Up
+      </h2>
+      <div className="flex gap-8 items-center justify-center my-2">
+        <div className="flex flex-col gap-2 items-center">
+          <Image
+            src={patientImage}
+            alt="Patient Image"
+            className={patientImageClass}
+            onClick={() => setUserType(() => "Patient")}
+          />
+          <p className={patientTextClass}>Patient</p>
         </div>
-
-        {/* Form Card */}
-        <div className="bg-white rounded-3xl shadow-xl p-8 space-y-6">
-          <div className="space-y-5">
-            {/* Name Input */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Full Name *
-              </label>
-              <input
-                type="text"
-                placeholder="Enter your full name"
-                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:bg-white transition-all duration-300"
-              />
-            </div>
-
-            {/* Email Input */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Email Address *
-              </label>
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:bg-white transition-all duration-300"
-              />
-            </div>
-
-            {/* Password Input */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Password *
-              </label>
-              <input
-                type="password"
-                placeholder="Create a strong password"
-                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:bg-white transition-all duration-300"
-              />
-            </div>
-
-            {/* Phone Input */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Phone Number *
-              </label>
-              <input
-                type="tel"
-                placeholder="+91 XXXXX XXXXX"
-                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:bg-white transition-all duration-300"
-              />
-              <p className="text-xs text-gray-500 mt-1">Please enter a valid phone number</p>
-            </div>
-
-            {/* Birth Date Input */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Birth Date *
-              </label>
-              <input
-                type="date"
-                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:bg-white transition-all duration-300"
-              />
-            </div>
-
-            {/* Gender Selection */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-3">
-                Gender *
-              </label>
-              <div className="flex gap-4">
-                <label className="flex items-center gap-2 px-6 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-500 transition-all duration-300 has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50">
-                  <input type="radio" name="gender" value="Male" className="w-4 h-4 text-blue-600" />
-                  <span className="font-medium">Male</span>
-                </label>
-                <label className="flex items-center gap-2 px-6 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-500 transition-all duration-300 has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50">
-                  <input type="radio" name="gender" value="Female" className="w-4 h-4 text-blue-600" />
-                  <span className="font-medium">Female</span>
-                </label>
-              </div>
-            </div>
-
-            {/* Doctor-specific fields */}
-            {userType === "Doctor" && (
-              <div className="space-y-6 mt-8">
-                {/* Certificates Section */}
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border-2 border-blue-200">
-                  <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-xl font-bold text-gray-800">Certificates</h3>
-                    <button
-                      type="button"
-                      className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-                    >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                      </svg>
-                      Add Certificate
-                    </button>
-                  </div>
-                  <div className="space-y-4 bg-white rounded-xl p-4">
-                    <input
-                      type="text"
-                      placeholder="Certificate Name"
-                      className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Issuing Authority"
-                      className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500"
-                    />
-                    <div className="grid grid-cols-2 gap-4">
-                      <input
-                        type="date"
-                        placeholder="Start Date"
-                        className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500"
-                      />
-                      <input
-                        type="date"
-                        placeholder="End Date"
-                        className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Experience Section */}
-                <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border-2 border-purple-200">
-                  <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-xl font-bold text-gray-800">Experience</h3>
-                    <button
-                      type="button"
-                      className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-                    >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                      </svg>
-                      Add Experience
-                    </button>
-                  </div>
-                  <div className="space-y-4 bg-white rounded-xl p-4">
-                    <input
-                      type="text"
-                      placeholder="Job Title"
-                      className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-purple-500"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Firm/Hospital Name"
-                      className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-purple-500"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Department"
-                      className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-purple-500"
-                    />
-                    <div className="grid grid-cols-2 gap-4">
-                      <input
-                        type="date"
-                        placeholder="Start Date"
-                        className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-purple-500"
-                      />
-                      <input
-                        type="date"
-                        placeholder="End Date"
-                        className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-purple-500"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Interests Section */}
-                <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border-2 border-green-200">
-                  <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-xl font-bold text-gray-800">Interests</h3>
-                    <button
-                      type="button"
-                      className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-                    >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                      </svg>
-                      Add Interest
-                    </button>
-                  </div>
-                  <div className="space-y-4 bg-white rounded-xl p-4">
-                    <input
-                      type="text"
-                      placeholder="Interest Name"
-                      className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-green-500"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Category"
-                      className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-green-500"
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Footer */}
-            <div className="pt-4">
-              <p className="text-center text-gray-600 mb-4">
-                Already have an account?{" "}
-                <Link href="/auth/signin" className="text-blue-600 font-semibold hover:text-blue-700">
-                  Sign in
-                </Link>
-              </p>
-
-              <button
-                onClick={handleSubmit}
-                className="w-full py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Create Account
-              </button>
-            </div>
-          </div>
+        <div className="flex flex-col gap-2 items-center">
+          <Image
+            src={doctorImage}
+            alt="Doctor Image"
+            className={doctorImageClass}
+            onClick={() => setUserType(() => "Doctor")}
+          />
+          <p className={doctorTextClass}>Doctor</p>
         </div>
       </div>
+      <form onSubmit={handleSubmit}>
+        {formFields.map((field) => {
+          return (
+            <>
+              {field.name === "birthDate" ? (
+                <>
+                  <label className="block text-base mb-1.5 font-semibold text-neutral-700">
+                    {field.title} *
+                  </label>
+                  <div className="calendar-container relative ">
+                    <Calendar
+                      value={
+                        formData.birthDate ? new Date(formData.birthDate) : null
+                      }
+                      onChange={handleDateChange}
+                      showIcon
+                      dateFormat="yy-mm-dd"
+                      placeholder="Select your birth date (yyyy-mm-dd)"
+                      maxDate={new Date()}
+                      yearRange="1900:2023"
+                      className={`bg-neutral-100 w-full py-4 px-6 text-base rounded-lg border border-solid border-neutral-300 grey-100 outline-none transition-[border-color] focus:border-sky-500 focus:bg-neutral-50 ${
+                        errorMessage.birthDate ? "p-invalid" : ""
+                      }`}
+                      panelClassName="bg-white" // Custom class to set the background of the calendar popup
+                    />
+                    {errorMessage.birthDate && (
+                      <small className="text-xs mt-1 text-red-700 font-semibold">
+                        {errorMessage.birthDate}
+                      </small>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <InputComponent
+                  key={field.name}
+                  label={field.title}
+                  type={field.type}
+                  name={field.name}
+                  placeholder={
+                    field.name === "phone" && !formData.phone
+                      ? "+20 XXXX XXX XXX"
+                      : `Enter ${field.title}`
+                  }
+                  value={formData[field.name as keyof typeof formData]}
+                  onChange={handleChange}
+                  errorText={
+                    errorMessage[field.name as keyof typeof errorMessage]
+                  }
+                  required
+                  additionalText={
+                    field.name === "phone" && !errorMessage.phone
+                      ? "Please Enter A Valid Phone Number"
+                      : ""
+                  }
+                />
+              )}
+            </>
+          );
+        })}
+        <div className="mb-4">
+          <label className="block text-base mb-1.5 font-semibold text-neutral-700">
+            Gender *
+          </label>
+          <div className="flex gap-8">
+            <label>
+              <input
+                type="radio"
+                name="gender"
+                value="Male"
+                onChange={handleChange}
+                className="radio align-middle mb-[3px] mr-1"
+                checked={formData.gender === "Male"}
+                required
+              />
+              Male
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="gender"
+                value="Female"
+                onChange={handleChange}
+                className="radio align-middle mb-[3px] mr-1"
+                checked={formData.gender === "Female"}
+              />
+              Female
+            </label>
+          </div>
+        </div>
+        {userType === "Doctor" ? (
+          <>
+            <div className="mb-4 relative border-2 border-blue-400 rounded-lg">
+              <div className="flex justify-between items-center mb-3 p-3">
+                <button
+                  className="flex gap-2 rounded-xl border-2 p-2 mb-1 border-green-500 hover:bg-green-100 transition-colors"
+                  onClick={handleAddCertificate}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-6 stroke-green-500"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 4.5v15m7.5-7.5h-15"
+                    />
+                  </svg>
+                  <p className="text-green-500 font-bold">Add Certificate</p>
+                </button>
+                <p className="font-semibold text-xl">Certificates</p>
+              </div>
+              {doctorCertificates.map((certificate) => {
+                return (
+                  <div
+                    key={certificate.id}
+                    className="p-2 border-t-4 border-blue-400"
+                  >
+                    <InputComponent
+                      label="Certificate Name"
+                      type="text"
+                      name="name"
+                      placeholder={
+                        "Enter The Name Of Certificate Number " +
+                        (certificate.id + 1)
+                      }
+                      value={certificate.name}
+                      onChange={handleCertificateChange}
+                      required
+                    />
+                    <InputComponent
+                      label="Certificate Authority"
+                      type="text"
+                      name="authority"
+                      placeholder={
+                        "Enter The Authority Of Certificate Number " +
+                        (certificate.id + 1)
+                      }
+                      value={certificate.authority}
+                      onChange={handleCertificateChange}
+                      required
+                    />
+                    <InputComponent
+                      label="Certificate Start Date"
+                      type="text"
+                      name="startDate"
+                      placeholder={
+                        "Enter The Start Date Of Certificate Number " +
+                        (certificate.id + 1)
+                      }
+                      value={certificate.startDate}
+                      onChange={handleCertificateChange}
+                      required
+                    />
+                    <InputComponent
+                      label="Certificate End Date"
+                      type="text"
+                      name="endDate"
+                      placeholder={
+                        "Enter The End Date Of Certificate Number " +
+                        (certificate.id + 1)
+                      }
+                      value={certificate.endDate}
+                      onChange={handleCertificateChange}
+                      required
+                    />
+                    <button
+                      className="flex gap-2 rounded-xl border-2 p-2 mb-1 border-red-500 hover:bg-red-100 transition-colors"
+                      onClick={() => handleDeleteCertificate(certificate.id)}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-6 stroke-red-500"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M5 12h14"
+                        />
+                      </svg>
+                      <p className="text-red-500 font-bold">
+                        Delete Certificate
+                      </p>
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="mb-4 relative border-2 border-blue-400 rounded-lg">
+              <div className="flex justify-between items-center mb-3 p-3">
+                <button
+                  className="flex gap-2 rounded-xl border-2 p-2 mb-1 border-green-500 hover:bg-green-100 transition-colors"
+                  onClick={handleAddExperience}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-6 stroke-green-500"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 4.5v15m7.5-7.5h-15"
+                    />
+                  </svg>
+                  <p className="text-green-500 font-bold">Add Experience</p>
+                </button>
+                <p className="font-semibold text-xl">Experiences</p>
+              </div>
+              {doctorExperiences.map((experience) => {
+                return (
+                  <div
+                    key={experience.id}
+                    className="p-2 border-t-4 border-blue-400"
+                  >
+                    <InputComponent
+                      label="Experience Title"
+                      type="text"
+                      name="title"
+                      placeholder={
+                        "Enter The Title Of Experience Number " +
+                        (experience.id + 1)
+                      }
+                      value={experience.title}
+                      onChange={handleExperienceChange}
+                      required
+                    />
+                    <InputComponent
+                      label="Experience Firm"
+                      type="text"
+                      name="firm"
+                      placeholder={
+                        "Enter The Firm Of Experience Number " +
+                        (experience.id + 1)
+                      }
+                      value={experience.firm}
+                      onChange={handleExperienceChange}
+                      required
+                    />
+                    <InputComponent
+                      label="Experience Department"
+                      type="text"
+                      name="department"
+                      placeholder={
+                        "Enter The Department Of Experience Number " +
+                        (experience.id + 1)
+                      }
+                      value={experience.department}
+                      onChange={handleExperienceChange}
+                      required
+                    />
+                    <InputComponent
+                      label="Experience Start Date"
+                      type="text"
+                      name="startDate"
+                      placeholder={
+                        "Enter The Start Date Of Experience Number " +
+                        (experience.id + 1)
+                      }
+                      value={experience.startDate}
+                      onChange={handleExperienceChange}
+                      required
+                    />
+                    <InputComponent
+                      label="Experience End Date"
+                      type="text"
+                      name="endDate"
+                      placeholder={
+                        "Enter The End Date Of Experience Number " +
+                        (experience.id + 1)
+                      }
+                      value={experience.endDate}
+                      onChange={handleExperienceChange}
+                      required
+                    />
+                    <button
+                      className="flex gap-2 rounded-xl border-2 p-2 mb-1 border-red-500 hover:bg-red-100 transition-colors"
+                      onClick={() => handleDeleteExperience(experience.id)}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-6 stroke-red-500"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M5 12h14"
+                        />
+                      </svg>
+                      <p className="text-red-500 font-bold">
+                        Delete Experience
+                      </p>
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="mb-4 relative border-2 border-blue-400 rounded-lg">
+              <div className="flex justify-between items-center mb-3 p-3">
+                <button
+                  className="flex gap-2 rounded-xl border-2 p-2 mb-1 border-green-500 hover:bg-green-100 transition-colors"
+                  onClick={handleAddInterest}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-6 stroke-green-500"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 4.5v15m7.5-7.5h-15"
+                    />
+                  </svg>
+                  <p className="text-green-500 font-bold">Add Interest</p>
+                </button>
+                <p className="font-semibold text-xl">Interests</p>
+              </div>
+              {doctorInterests.map((interest) => {
+                return (
+                  <div
+                    key={interest.id}
+                    className="p-2 border-t-4 border-blue-400"
+                  >
+                    <InputComponent
+                      label="Interest Name"
+                      type="text"
+                      name="name"
+                      placeholder={
+                        "Enter The Name Of Interest Number " + (interest.id + 1)
+                      }
+                      value={interest.name}
+                      onChange={handleInterestChange}
+                      required
+                    />
+                    <InputComponent
+                      label="Interest Categoryty"
+                      type="text"
+                      name="category"
+                      placeholder={
+                        "Enter The Category Of Interest Number " +
+                        (interest.id + 1)
+                      }
+                      value={interest.category}
+                      onChange={handleInterestChange}
+                      required
+                    />
+                    <button
+                      className="flex gap-2 rounded-xl border-2 p-2 mb-1 border-red-500 hover:bg-red-100 transition-colors"
+                      onClick={() => handleDeleteInterest(interest.id)}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-6 stroke-red-500"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M5 12h14"
+                        />
+                      </svg>
+                      <p className="text-red-500 font-bold">Delete Interest</p>
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
+        <p className="mb-2">
+          Already have an account?{" "}
+          <Link
+            href="/auth/signin"
+            className="text-blue-500 font-semibold cursor-pointer"
+          >
+            Sign in
+          </Link>
+        </p>
+        {error && (
+          <p className="font-semibold text-red-700 mt-4 mb-2">
+            This Email Is Already Registered!
+          </p>
+        )}
+        {signedUp && (
+          <p className="font-semibold text-green-700 mt-4 mb-2">
+            Signed up successfully!
+          </p>
+        )}
+        <button
+          type="submit"
+          className={`${submitButtonClass} disabled:cursor-not-allowed disabled:opacity-50 mb-14`}
+          disabled={!formValid || loading}
+        >
+          {loading ? "Loading..." : "Register"}
+        </button>
+      </form>
     </div>
   );
 }
