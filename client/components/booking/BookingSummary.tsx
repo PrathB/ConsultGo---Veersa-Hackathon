@@ -156,8 +156,8 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
               doctor?.fees60min && doctor?.fees30min
                 ? `for ${
                     selectedDuration === 60
-                      ? `${doctor.fees60min} EGP`
-                      : `${doctor.fees30min} EGP`
+                      ? `₹${doctor.fees60min}`
+                      : `₹${doctor.fees30min}`
                   }`
                 : ""
             } `}
