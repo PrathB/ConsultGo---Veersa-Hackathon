@@ -1,8 +1,10 @@
 import React, { useState, useRef } from "react";
 import ConfirmDialog from "./ConfirmDialog";
+import SquarePayment from "./SquarePayment";
 import { Toast } from "primereact/toast";
 import { convertDateToCode } from "@/utils/formatDoctorAvailabilities";
 import type { Doctor } from "@/types";
+
 interface BookingSummaryProps {
   selectedSlot: string | null;
   selectedDuration: number;
@@ -24,153 +26,125 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
   selectedDate,
   appointmentState,
 }) => {
-  const [complaint, setComplaint] = React.useState("");
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [complaint, setComplaint] = useState("");
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-  const [loading, setLoading] = useState(false); // Loading state
-
-  // Reference for Toast
+  const [showPayment, setShowPayment] = useState(false);
+  const [loading, setLoading] = useState(false);
   const toast = useRef<any>(null);
 
-  const cancelCreate = () => {
-    setShowConfirmDialog(false);
-  };
-  const getDateTime = () => {
-    if (!selectedDate || !selectedSlot) return null;
-
-    // Combine the date and time and format it correctly
-    const dateStr = new Date(selectedDate.date).toISOString().split("T")[0]; // Extract date in YYYY-MM-DD format
-    const timeStr = selectedSlot; // Already in HH:mm format (assumed)
-
-    // Construct the combined datetime string in the correct format
-    const combinedDateTime = `${dateStr}T${timeStr}Z`;
-
-    return combinedDateTime;
-  };
-
-  const getDay = (date: string) => {
-    const dateObj = new Date(date);
-
-    return dateObj.toLocaleDateString("en-US", { weekday: "long" });
-  };
+  const cancelCreate = () => setShowConfirmDialog(false);
+  const getDateTime = () =>
+    !selectedDate || !selectedSlot
+      ? null
+      : `${
+          new Date(selectedDate.date).toISOString().split("T")[0]
+        }T${selectedSlot}Z`;
+  const getDay = (date: string) =>
+    new Date(date).toLocaleDateString("en-US", { weekday: "long" });
 
   const bookAppointment = () => {
     if (!selectedSlot || !selectedDate) return;
-    setLoading(true);
-    setTimeout(() => {
-      setShowConfirmDialog(true);
-      setLoading(false);
-    }, 1000);
+    setShowConfirmDialog(true);
   };
-  const confirmCreate = async () => {
-    if (!selectedSlot || !selectedDate) return;
 
+  const handlePaymentSuccess = async (token: string) => {
+    setShowPayment(false);
+    await confirmCreate(token);
+  };
+
+  const handlePaymentError = (err: any) => {
+    setShowPayment(false);
+    toast.current.show({
+      severity: "error",
+      detail: `Payment failed: ${err.message}`,
+      life: 3000,
+      className: "bg-red-600 text-white p-3 rounded-lg font-semibold",
+    });
+  };
+
+  const confirmCreate = async (paymentToken?: string) => {
     setLoading(true);
-    setErrorMessage(null);
     const body = {
       doctor_id: Number(doctor.id),
-      complaint: complaint,
+      complaint,
       duration: selectedDuration,
-      // appointment_type: appointmentState,
-      appointment_type: "First_time", //STATIC FOR NOW
+      appointment_type: "First_time",
       appointment_date: getDateTime(),
-      appointment_parent_reference: null,
       time_slot_code: convertDateToCode(
         getDay(selectedDate.date),
-        selectedSlot,
-        selectedType,
+        selectedSlot!,
+        selectedType
       ),
+      payment_token: paymentToken, // Include payment info if needed by backend
     };
-    console.log("body: ", body);
+
     try {
-      const token = localStorage.getItem("jwt");
+      // TODO: Example: send token to your backend to create payment & booking
+      // const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_NAME}/patient/appointment/book`, {...})
 
-      // const response = await fetch(
-      //   `${process.env.NEXT_PUBLIC_SERVER_NAME}/patient/appointment/book`,
-      //   {
-      //     method: "POST",
-      //     mode: "cors",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //       Authorization: `Bearer ${token}`,
-      //     },
-
-      //     body: JSON.stringify(body),
-      //   }
-      // );
-
-      // if (!response.ok) {
-      //   throw new Error("doctors can't book appointments");
-      // }
-
-      // Close the dialog and show success message
-
-      setTimeout(() => {
-        setShowConfirmDialog(false);
-        toast.current.show({
-          severity: "success",
-          detail: `Request sent successfully!`,
-          life: 3000,
-          className:
-            "bg-green-600 ml-2 text-white font-semibold rounded-lg shadow-lg p-3",
-        });
-      }, 2000);
+      setShowConfirmDialog(false);
+      toast.current.show({
+        severity: "success",
+        detail: "Payment Successful and slot booked!",
+        life: 3000,
+        className: "bg-green-600 text-white p-3 rounded-lg font-semibold",
+      });
     } catch (error) {
       toast.current.show({
         severity: "error",
         detail: `Failed to book appointment: ${error}`,
         life: 3000,
-        className:
-          "bg-red-600 ml-2 text-white font-semibold rounded-lg shadow-lg p-3",
+        className: "bg-red-600 text-white p-3 rounded-lg font-semibold",
       });
     } finally {
-      setLoading(false); // Stop loading state
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col gap-4 bg-white rounded-3xl shadow-md p-4  md:p-6 w-full">
+    <div className="flex flex-col gap-4 bg-white rounded-3xl shadow-md p-4 md:p-6 w-full">
       <Toast ref={toast} />
-      <div className="flex items-center justify-center">
-        <div className="md:my-2 my-1 text-blue-600 font-bold ">
-          {selectedSlot ? (
-            <div className="flex flex-row  md:gap-2 gap-1 items-center justify-start md:text-base text-[13px]">
-              <span className="md:px-4 md:py-2 px-2 py-1 rounded-lg bg-green-600 hover:bg-green-700 text-white">
-                {selectedDate?.date} {selectedSlot}
-              </span>
-              <span>Slot is selected</span>
-            </div>
-          ) : (
-            "No slot selected"
-          )}
-        </div>
-      </div>
       <button
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white md:py-3 py-2 rounded-lg font-semibold disabled:cursor-not-allowed disabled:opacity-50 md:text-base text-sm"
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold disabled:cursor-not-allowed disabled:opacity-50"
         disabled={!selectedSlot || loading}
-        onClick={() => bookAppointment()}
+        onClick={bookAppointment}
       >
-        {loading
-          ? "Sending..."
-          : `Book Now ${
-              doctor?.fees60min && doctor?.fees30min
-                ? `for ${
-                    selectedDuration === 60
-                      ? `₹${doctor.fees60min}`
-                      : `₹${doctor.fees30min}`
-                  }`
-                : ""
-            } `}
+        Book Now
       </button>
-      {errorMessage && <p className="text-red-500 mt-2">{errorMessage}</p>}
+
+      {/* Confirm Dialog */}
       <ConfirmDialog
         visible={showConfirmDialog}
-        onConfirm={confirmCreate}
+        onConfirm={() => {
+          setShowConfirmDialog(false);
+          setShowPayment(true);
+        }}
         onCancel={cancelCreate}
         loading={loading}
         complaint={complaint}
         setComplaint={setComplaint}
       />
+
+      {/* Payment Modal */}
+      {showPayment && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-xl shadow-lg w-[90%] max-w-md">
+            <SquarePayment
+              amount={
+                selectedDuration === 60 ? doctor.fees60min : doctor.fees30min
+              }
+              onSuccess={handlePaymentSuccess}
+              onError={handlePaymentError}
+            />
+            <button
+              onClick={() => setShowPayment(false)}
+              className="mt-4 w-full bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg"
+            >
+              Cancel Payment
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
