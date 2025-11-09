@@ -5,7 +5,7 @@ import RatingComp from "@/components/common/RatingComp";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 import { IoMdAlarm } from "react-icons/io";
 import { FaMoneyBill1Wave } from "react-icons/fa6";
-import { FaUserCircle } from "react-icons/fa";
+import { FaMoneyBillAlt, FaUserCircle } from "react-icons/fa";
 import { formatDateString } from "@/utils/date";
 import BookingButton from "./BookingButton";
 import styles from "./card.module.css";
@@ -53,10 +53,10 @@ interface DoctorFeesProps {
 
 const DoctorFees: React.FC<DoctorFeesProps> = ({ fees60min, fees30min }) => (
   <div className="flex justify-between items-center space-x-2">
-    <FaMoneyBill1Wave className="h-6 w-6 text-[#035fe9]" />
+    <FaMoneyBillAlt className="h-6 w-6 text-[#035fe9]" />
     <div className="text-xs md:text-md grow">
-      <span className="text-[#035fe9]">{fees60min} EGP</span>/ 60 min
-      <span className="text-[#035fe9]">{fees30min} EGP</span> / 30 min
+      <span className="text-[#035fe9]">₹{fees60min}</span>/ 60 min,{" "}
+      <span className="text-[#035fe9]">₹{fees30min}</span> / 30 min
     </div>
   </div>
 );
@@ -69,7 +69,7 @@ interface DoctorCardProps {
 
 const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
   const [doctorRating, setDoctorRating] = useState<number | null>(
-    doctor.rating || 0,
+    doctor.rating || 0
   );
 
   // Convert buffer data to base64 image
