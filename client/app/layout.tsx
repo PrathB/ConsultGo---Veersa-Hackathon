@@ -11,10 +11,10 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "ConsultGo",
   description:
-    "Telemedicine Enterprise Solution ",
+    "TeleHealth Enterprise Solution ",
   viewport: "width=device-width, initial-scale=1",
   keywords:
-    "telemedicine, pilot, development, project, enterprise, solution, healthcare, health, medical, doctor, patient, appointment, video, call, chat, prescription, history, profile, user, admin, dashboard, calendar, schedule, reminder, notification, telemedapp",
+    "telehealth, development, project, enterprise, solution, healthcare, health, medical, doctor, patient, appointment, video, call, chat, prescription, history, profile, user, admin, dashboard, calendar, schedule, reminder, notification",
 };
 
 export default function RootLayout({

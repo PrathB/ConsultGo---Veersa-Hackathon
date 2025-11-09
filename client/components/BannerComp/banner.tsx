@@ -78,7 +78,7 @@ const Banner = () => {
               <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/20 to-purple-600/20 z-10"></div>
               <img
                 className="w-full h-auto object-cover"
-                src="assets/banner.jpg"
+                src="assets/banner.png"
                 alt="Expert consultation"
               />
             </div>
