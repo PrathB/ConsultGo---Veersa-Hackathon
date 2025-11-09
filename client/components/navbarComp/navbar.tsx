@@ -60,12 +60,12 @@ const Navbar = () => {
 
 
   return (
-    <nav className="h-14 bg-white border border-b-[1px] sticky top-0 z-10 pb-8">
+    <nav className="h-auto bg-white/100 border-b border-gray-200 sticky top-0 z-[999] pb-1 shadow-sm">
       <div className="max-w-full md:max-w-[90%] min-[1130px]:max-w-[75%] flex justify-between items-center mx-auto">
         <Link href="/">
           <div className="flex justify-center items-center">
-            <img className="w-14 h-14" src="/assets/logo.png" alt="logo" />
-            <span className="text-base md:text-xl">ConsultGo</span>
+            <img className="w-14 h-14 object-contain" src="/assets/logo.png" alt="logo" />
+            <span className="text-base md:text-xl mx-2">ConsultGo</span>
           </div>
         </Link>
         <div className="hidden min-[1130px]:inline-block justify-between space-x-4 text-[#4d4d4f] text-sm font-light">
